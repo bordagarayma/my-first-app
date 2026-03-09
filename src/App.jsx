@@ -41,18 +41,32 @@ function App() {
       <h1>Hello world!</h1>
       <p>How are youuuu?</p>
       <Card>
-        {pokemons.map((pokemon) => (
-  <div key={pokemon.id}>
-    <img
-      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-      alt={pokemon.name}
-      width={72}
-      height={72}
-    />
-    <p>{pokemon.name}</p>
+  <h3 style={{ margin: "0 0 8px" }}>Charts</h3>
+
+  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+    {pokemons.map((pokemon) => (
+      <div
+        key={pokemon.id}
+        style={{
+          border: "1px solid #ccc",
+          borderRadius: 8,
+          padding: 8,
+          width: 120,
+          textAlign: "center",
+        }}
+      >
+        <img
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+          alt={pokemon.name}
+          width={72}
+          height={72}
+        />
+        <div>{pokemon.name}</div>
+        <div style={{ fontSize: 12 }}>{pokemon.type}</div>
+      </div>
+    ))}
   </div>
-))}
-      </Card>
+</Card>
     </>
   )
 }
