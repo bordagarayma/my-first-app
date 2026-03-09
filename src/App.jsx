@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
 import Card from "./components/Card";
@@ -27,34 +27,82 @@ function App() {
     { id: 148, name: "Dragonair", type: "Dragon", hp: 61, attack: 84 },
   ];
 
+  const [selectedType, setSelectedType] = useState("All");
+
+  const pokemonTypes = useMemo(() => {
+    const types = pokemons.map((pokemon) => pokemon.type);
+    return ["All", ...new Set(types)];
+  }, [pokemons]);
+
+  const filteredPokemons = useMemo(() => {
+    if (selectedType === "All") {
+      return pokemons;
+    }
+
+    return pokemons.filter((pokemon) => pokemon.type === selectedType);
+  }, [selectedType, pokemons]);
+
   return (
     <>
-      <h1>Hello world!</h1>
-      <p>How are youuuu?</p>
-
       <Card>
-        <h3 style={{ margin: "0 0 8px" }}>Charts</h3>
+        <h2 style={{ textAlign: "center", marginBottom: 24 }}>Charts</h2>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          {pokemons.map((pokemon) => (
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+            justifyContent: "center",
+            marginBottom: 24,
+          }}
+        >
+          {pokemonTypes.map((type) => (
+            <button
+              key={type}
+              onClick={() => setSelectedType(type)}
+              style={{
+                padding: "10px 16px",
+                borderRadius: 999,
+                border: "1px solid #ccc",
+                cursor: "pointer",
+                backgroundColor: selectedType === type ? "#1f2937" : "#fff",
+                color: selectedType === type ? "#fff" : "#1f2937",
+                fontWeight: 600,
+              }}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            gap: 20,
+            flexWrap: "wrap",
+          }}
+        >
+          {filteredPokemons.map((pokemon) => (
             <div
               key={pokemon.id}
               style={{
                 border: "1px solid #ccc",
-                borderRadius: 8,
-                padding: 8,
-                width: 120,
+                borderRadius: 12,
+                padding: 16,
+                width: 170,
                 textAlign: "center",
               }}
             >
               <img
                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
                 alt={pokemon.name}
-                width={72}
-                height={72}
+                width={96}
+                height={96}
               />
-              <div>{pokemon.name}</div>
-              <div style={{ fontSize: 12 }}>{pokemon.type}</div>
+              <div style={{ fontSize: 18, fontWeight: 500, marginTop: 8 }}>
+                {pokemon.name}
+              </div>
+              <div style={{ fontSize: 14, marginTop: 6 }}>{pokemon.type}</div>
             </div>
           ))}
         </div>
